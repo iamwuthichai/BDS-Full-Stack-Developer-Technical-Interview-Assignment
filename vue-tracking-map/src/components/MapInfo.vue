@@ -79,7 +79,6 @@ export default defineComponent({
       }
 
       const loader = new Loader({
-        // apiKey: "AIzaSyDUeNLdnx0CqDtfCXRywGdcizCnBVCdwik", // ใช้ API Key ของคุณ
         apiKey: "YOUR_KEY", // ใช้ API Key ของคุณ
         version: "weekly",
         language: "th",
