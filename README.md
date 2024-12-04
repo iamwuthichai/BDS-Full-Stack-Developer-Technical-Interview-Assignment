@@ -1,3 +1,28 @@
+# Note from developer
+
+## FrontEnd - VueJS
+1. เปิด Terminal & CMD เพื่อ CD เข้า Project
+2. ใช้ command: npm install เพื่อติดตั้ง Package & Lib
+3. ใช้ command: npm run start หรือ npm run start:dev
+4. แก้ไขไฟล์ ./src/app.module.ts เพื่อแก้ไข Database Config
+5. ใช้ command: npm run build เพื่อ Build Project สำหรับ Deploy ขึ้น Cloud/Server/Hosting
+
+## BackEnd - NestJs
+1. เปิด Terminal & CMD เพื่อ CD เข้า Project
+2. ใช้ command: npm install เพื่อติดตั้ง Package & Lib
+3. ใช้ command: npm run start
+4. แก้ไขไฟล์ config.ts เพื่อเปลี่ยน API EndPoint
+5. แก้ไขไฟล์ ./src/components/MapInfo.vue เพื่อแก้ไข Key Google Map ค้นหา "apiKey:" เพื่อแก้ไข Key
+6. ใช้ command: npm run build เพื่อ Build Project สำหรับ Deploy ขึ้น Cloud/Server/Hosting
+
+## Database - MySQL
+1. ติดตั้ง Xampp v8.x.x ขึ้นไป เพื่อใช้สำหรับทำ WebServer Test
+2. เปิดโปรแกรม Xampp Control เพื่อ Start: Apache & MySQL
+3. Import ไฟล์ .SQL ในโฟลเดอร์  "# Database SQL\tracking_map_example.sql"
+4. เมื่อ Import เรียบร้อยแล้วจะเจอ Table: site และข้อมูลตัวอย่างสำหรับทดสอบ
+
+## Deployment - [None]
+
 # Technical Interview Question: 01 Full Stack Flutter Sitelist Screen
 
 ## Objective
