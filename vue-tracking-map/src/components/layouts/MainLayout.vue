@@ -3,7 +3,7 @@
     <!-- Header -->
     <!-- Title to component -->
     <HeaderLayout
-    :title="title"
+    :title="headerTitle"
     :titleClass="titleClass"
     :headerClass="headerClass"
     />
@@ -15,7 +15,7 @@
 
     <!-- Footer -->
     <!-- Footer to component -->
-    <FooterLayout
+    <FooterLayout hidden
     :footerTitle="footerTitle"
     :footerTitleClass="footerTitleClass"
     :footerClass="footerClass"
@@ -35,7 +35,11 @@ export default defineComponent({
     FooterLayout
   },
   props: {
-
+    headerTitle: {
+      type: String,
+      required: false,
+      default: "", // ค่าเริ่มต้น
+    },
   },
   data() {
     return {

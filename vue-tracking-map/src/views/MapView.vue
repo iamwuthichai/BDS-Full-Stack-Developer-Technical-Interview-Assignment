@@ -1,7 +1,5 @@
 <template>
-  <MainLayout
-
-  >
+  <MainLayout :headerTitle="'เลือกที่อยู่ส่งด่วน'">
     <div class="m-2">
       <!-- Search Input -->
       <label class="relative block">
@@ -51,12 +49,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import MainLayout from "@/components/layouts/MainLayout.vue";
+import MapInfo from "../components/MapInfo.vue";
 
 import { fetchSites } from "@/services/siteService";
 import type { SiteInterface } from "@/services/types/Site";
-
-import MainLayout from "@/components/layouts/MainLayout.vue";
-import MapInfo from "../components/MapInfo.vue";
 
 // State
 const btnDisabled = ref(false);
@@ -101,12 +98,14 @@ const selectLocation = (locationName: any) => {
   searchQuery.value = locationInfo;
   address.value = locationInfo;
   filteredLocations.value = [];
+  searchQuery.value = "";
 
   // Set Position
   initialPosition.value = {
     lat: parseFloat(locationName.latitude),
     lng: parseFloat(locationName.longitude)
   };
+  console.log(initialPosition.value);
 };
 
 // Lifecycle Hook

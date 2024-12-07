@@ -1,20 +1,30 @@
 <template>
-  <MainLayout>
+  <MainLayout :headerTitle="'ค้นหาสาขา'">
     <!-- Header -->
     <div class="text-center mb-6">
       <!-- Search Input -->
       <div class="relative">
-        <input
-          class="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm rounded-full text-black"
-          placeholder="ค้นหาที่อยู่จัดส่งสินค้า"
-          type="text"
-          name="search"
-          v-model="searchQuery"
-          @input="filterLocations"
-        />
-        <ul
+        <label class="relative block">
+          <span class="sr-only">Search</span>
+          <span class="absolute inset-y-0 left-0 flex items-center pl-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </span>
+          <input
+            class="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm rounded-full text-black"
+            placeholder="ค้นหาที่อยู่จัดส่งสินค้า"
+            type="text"
+            name="search"
+            v-model="searchQuery"
+            @input="filterLocations"
+          />
+        </label>
+
+        <!-- Dropdown List -->
+        <ul hidden
           v-if="filteredLocations.length"
-          class="absolute bg-white border border-gray-300 mt-2 w-full max-h-48 overflow-y-auto shadow-lg rounded-md z-10 transition-all duration-200"
+          class="absolute bg-white border border-gray-300 mt-2 w-full max-h-48 overflow-y-auto shadow-lg rounded-md z-10"
         >
           <li
             v-for="location in filteredLocations"
@@ -22,9 +32,11 @@
             @click="selectLocation(location)"
             class="px-4 py-2 text-black hover:bg-blue-100 cursor-pointer"
           >
-            {{ location.site_name }} (เวลาเปิดปิดร้าน: {{ location.site_open_time }}-{{ location.site_close_time }})
+            {{ location.site_name }}
+            (เวลาเปิดปิดร้าน: {{ location.site_open_time }} - {{ location.site_close_time }})
           </li>
         </ul>
+
       </div>
     </div>
 
@@ -42,7 +54,12 @@
           <div class="flex-1">
             <h2 class="text-lg font-semibold text-gray-800">{{ siteInfo.site_name }}</h2>
             <p class="text-gray-600">ระยะทาง: - กม.</p>
-            <p class="text-gray-600">เวลาเปิด-ปิดร้าน: <span class="font-bold">{{ siteInfo.site_open_time }} - {{ siteInfo.site_close_time }}</span></p>
+            <p class="text-gray-600">เวลาเปิด-ปิดร้าน:
+              <span class="font-bold" v-if="checkShopStatus(siteInfo.site_open_time, siteInfo.site_close_time)">{{ siteInfo.site_open_time }} - {{ siteInfo.site_close_time }}</span>
+              <span class="font-bold" v-if="!checkShopStatus(siteInfo.site_open_time, siteInfo.site_close_time)">
+                <span class="text-red-500">ปิด</span> ({{ siteInfo.site_open_time }} - {{ siteInfo.site_close_time }})
+              </span>
+            </p>
           </div>
 
         </div>
@@ -134,6 +151,29 @@ const selectLocation = (location: SiteInterface) => {
 };
 
 onMounted(loadSites);
+
+function checkShopStatus(openTime: string, closeTime: string) {
+  // เอาช่วงเวลาเปิด-ปิดมาแยกชั่วโมงและนาที
+  const [openHour, openMinute] = openTime.split(':').map(Number);
+  const [closeHour, closeMinute] = closeTime.split(':').map(Number);
+
+  // เวลาปัจจุบัน
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
+
+  // แปลงเวลาปัจจุบัน, เวลาที่ร้านเปิด และเวลาที่ร้านปิดเป็นนาที
+  const currentTimeInMinutes = currentHour * 60 + currentMinute;
+  const openTimeInMinutes = openHour * 60 + openMinute;
+  const closeTimeInMinutes = closeHour * 60 + closeMinute;
+
+  // ตรวจสอบสถานะของร้าน
+  if (currentTimeInMinutes >= openTimeInMinutes && currentTimeInMinutes <= closeTimeInMinutes) {
+    return true;
+  } else {
+    return false;
+  }
+}
 </script>
 
 <style scoped>
@@ -141,8 +181,15 @@ onMounted(loadSites);
   height: 1.5rem;
   width: 1.5rem;
 }
+/* .container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+} */
 .container {
   display: grid;
+  justify-content: center;
   grid-template-columns: repeat(2, 1fr); /* แบ่งช่องเป็น 3 คอลัมน์ */
   gap: 10px;
 }
