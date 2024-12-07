@@ -1,5 +1,5 @@
 <template>
-  <button :class="buttonClass">
+  <button :class="buttonClass" :disabled="disabled">
     <slot>
 
     </slot>
@@ -22,6 +22,10 @@ export default defineComponent({
     },
     buttonClass: {
       type: String,
+      required: true
+    },
+    disabled: {
+      type: Boolean,
       required: true
     },
   }
